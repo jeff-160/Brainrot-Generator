@@ -24,12 +24,12 @@ def transcribe(text: str) -> dict:
 
     return mappings
 
-def generate(text: str, video_file: str, output_video: str):
+def create_video(text: str, output_file: str):
     tts(text, audio_file)
 
     words = transcribe(text)
 
-    video = VideoFileClip(video_file)
+    video = VideoFileClip(f"assets/background/{random.choice(os.listdir('assets/background'))}")
     audio = AudioFileClip(audio_file)
      
     if audio.duration > video.duration:
@@ -58,11 +58,6 @@ def generate(text: str, video_file: str, output_video: str):
     
     composite = CompositeVideoClip([video, *word_clips])
     
-    composite.write_videofile(output_video, codec="libx264", audio_codec="aac")
+    composite.write_videofile(output_file, codec="libx264", audio_codec="aac")
 
     os.remove(audio_file)
-
-def create_video(text: str, output_file: str):
-    videos = os.listdir("assets/background")
-
-    generate(text, f"assets/background/{random.choice(videos)}", output_file)
