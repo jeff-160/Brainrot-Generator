@@ -9,7 +9,7 @@ def main():
     if args.f:
         try:
             with open(args.f, mode="r", encoding="utf-8") as f:
-                text = f.read()
+                text = " ".join(f.readlines())
         except:
             print(f"Error: Could not locate file \"{args.f}\"")
 
