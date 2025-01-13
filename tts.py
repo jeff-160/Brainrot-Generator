@@ -6,6 +6,7 @@ import re
 from json import load
 from threading import Thread
 from typing import Dict, List, Optional
+from random import choice
 
 def tts(
     text: str,
@@ -54,7 +55,9 @@ def _fetch_audio_bytes(
     # Function to generate audio for each text chunk
     def generate_audio_chunk(index: int, text_chunk: str):
         try:
-            response = requests.post(endpoint["url"], json={"text": text_chunk, "voice": 'en_us_006'})
+            voices = [*map(lambda x: x[:x.index('.')], os.listdir("samples"))]
+
+            response = requests.post(endpoint["url"], json={"text": text_chunk, "voice": choice(voices)})
             response.raise_for_status()
             audio_chunks[index] = response.json()[endpoint["response"]]
         except (requests.RequestException, KeyError):
