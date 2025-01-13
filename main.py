@@ -1,6 +1,11 @@
+import sys
+sys.dont_write_bytecode = True
+
 import pyttsx3, stable_whisper
 from moviepy import VideoFileClip, TextClip, CompositeVideoClip, AudioFileClip, vfx
 import os
+from tts import tts
+
 
 audio_file = "audio.mp3"
 
@@ -16,9 +21,7 @@ def sanitise(word: str):
     return word
 
 def transcribe(text: str) -> dict:
-    engine = pyttsx3.init()
-    engine.save_to_file(text, audio_file)
-    engine.runAndWait()
+    tts(text, audio_file)
 
     model = stable_whisper.load_model('base')
     result = model.align(audio_file, text, language='en')
@@ -72,4 +75,4 @@ if __name__ == "__main__":
     with open("test.txt", mode="r", encoding="utf-8") as f:
         text = " ".join([word for word in f.read().split(" ") if len(sanitise(word))])
 
-    create_video(text, "test.mp4", "output.mp4")
+    create_video(text, "background.mp4", "output.mp4")
