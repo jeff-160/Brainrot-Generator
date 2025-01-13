@@ -52,12 +52,12 @@ def _fetch_audio_bytes(
     text_chunks: List[str] = _split_text(text)
     audio_chunks: List[str] = ["" for _ in range(len(text_chunks))]
 
+    voice = choice([i[:i.index('.')] for i in os.listdir("samples")])
+
     # Function to generate audio for each text chunk
     def generate_audio_chunk(index: int, text_chunk: str):
         try:
-            voices = [*map(lambda x: x[:x.index('.')], os.listdir("samples"))]
-
-            response = requests.post(endpoint["url"], json={"text": text_chunk, "voice": choice(voices)})
+            response = requests.post(endpoint["url"], json={"text": text_chunk, "voice": voice})
             response.raise_for_status()
             audio_chunks[index] = response.json()[endpoint["response"]]
         except (requests.RequestException, KeyError):
