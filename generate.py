@@ -1,7 +1,6 @@
 import stable_whisper
 from moviepy import VideoFileClip, TextClip, CompositeVideoClip, AudioFileClip, vfx
-import re, os
-from random import choice
+import re, os, random
 from tts import tts
 
 audio_file = "audio.mp3"
@@ -33,7 +32,11 @@ def generate(text: str, video_file: str, output_video: str):
     video = VideoFileClip(video_file)
     audio = AudioFileClip(audio_file)
      
-    video = video.with_effects([vfx.Loop(duration=audio.duration)]) if audio.duration > video.duration else video.subclipped(0, audio.duration)
+    if audio.duration > video.duration:
+        video = video.with_effects([vfx.Loop(duration=audio.duration)])
+    else:
+        start_time = random.uniform(0, video.duration - audio.duration)
+        video = video.subclipped(start_time, start_time + audio.duration)
     
     word_clips = []
     
@@ -62,4 +65,4 @@ def generate(text: str, video_file: str, output_video: str):
 def create_video(text: str, output_file: str):
     videos = os.listdir("assets/background")
 
-    generate(text, f"assets/background/{choice(videos)}", output_file)
+    generate(text, f"assets/background/{random.choice(videos)}", output_file)
