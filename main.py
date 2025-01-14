@@ -7,7 +7,7 @@ def main():
     args = parser.parse_args()
 
     if args.f:
-        if args.f[::-1].find(".txt"[::-1]) != 0:
+        if args.f.strip()[::-1].find(".txt"[::-1]) != 0:
             raise Exception("Input file must be a .txt file")    
         
         try:
