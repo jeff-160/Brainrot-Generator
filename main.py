@@ -16,7 +16,7 @@ def main():
     else:
         text = args.t
 
-    create_video(text, args.o)
+    create_video(text.replace("...", "."), args.o)
 
 if __name__=="__main__":
     main()
